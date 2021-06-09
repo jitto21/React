@@ -1,5 +1,8 @@
 import React from "react";
-import axios from 'axios'
+import axios from 'axios';
+import './Register.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExpandAlt } from '@fortawesome/free-solid-svg-icons'
 
 export default class Register extends React.Component {
 
@@ -19,7 +22,8 @@ export default class Register extends React.Component {
                 number: false
             },
             errormsg: '',
-            successmsg: ''
+            successmsg: '',
+            modalClassName: 'modal-dialog modal-dialog-centered modal-lg'
         }
     }
 
@@ -45,15 +49,29 @@ export default class Register extends React.Component {
             .catch(err => {
                 this.setState({ errormsg: err });
             })
-            .finally(() => {
-                setTimeout(() => {
-                    this.clearMessage();
-                }, 3000)
-            })
+        // .finally(() => {
+        //     setTimeout(() => {
+        //         this.clearMessage();
+        //     }, 3000)
+        // })
+    }
+
+    expandModal = () => {
+        let className = '';
+        this.state.modalClassName.includes('modal-fullscreen') ?
+            className = 'modal-dialog modal-dialog-centered modal-lg' :
+            className = 'modal-fullscreen modal-dialog modal-dialog-centered modal-lg';
+        this.setState({ modalClassName: className });
     }
 
     clearMessage = () => {
         this.setState({ errormsg: '', successmsg: '' });
+    }
+
+    onCloseModal = () => {
+        setTimeout(() => {
+            this.setState({ modalClassName: 'modal-dialog modal-dialog-centered modal-lg' });
+        }, 600)
     }
 
     render() {
@@ -82,15 +100,82 @@ export default class Register extends React.Component {
 
             </form>
 
-            {   
-                this.state.successmsg !== '' &&  
+            {
+                this.state.successmsg !== '' &&
                 <div className="alert alert-success mt-3" role="alert">{this.state.successmsg}</div>
             }
 
             {
-                this.state.errormsg !== '' && 
+                this.state.errormsg !== '' &&
                 <div className="alert alert-danger" role="alert">{this.state.errormsg}</div>
             }
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Launch demo modal
+            </button>
+
+            <div class="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className={this.state.modalClassName} role="document">
+                    <div class="modal-content">
+                        <div>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                                <div className="modal-btns">
+                                    <button className="btn btn-sm" id="expand-btn" onClick={this.expandModal}><FontAwesomeIcon icon={faExpandAlt} /></button>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={this.onCloseModal}>
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="col-6">
+                                            <h5>Tour Highlights</h5>
+                                            <ul>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                            </ul>
+                                        </div>
+                                        <div className="col-6">
+                                            <img style={{ width: '100%' }} src="https://source.unsplash.com/nature" alt="nature.png" />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-6">
+                                            <img style={{ width: '100%' }} src="https://source.unsplash.com/nature" alt="nature.png" />
+                                        </div>
+                                        <div className="col-6">
+                                            <h5>Tour Highlights</h5>
+                                            <ul>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                                <li>Beauty</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={this.onCloseModal}>Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     }
